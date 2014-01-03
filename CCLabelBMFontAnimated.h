@@ -18,7 +18,7 @@ class CCLabelBMFontAnimated : public cocos2d::LabelBMFont{
     
 public:
     
-    //MIMIC LabelBMFont CREATE FUNCTIONS, RETURNING CCLabelBMFontAnimated
+    //Override LabelBMFont CREATE FUNCTIONS, RETURNING CCLabelBMFontAnimated
     CREATE_FUNC(CCLabelBMFontAnimated);
     static CCLabelBMFontAnimated * create(const char *str, const char *fntFile, float width, cocos2d::TextHAlignment alignment, cocos2d::Point imageOffset);
 	static CCLabelBMFontAnimated * create(const char *str, const char *fntFile, float width, cocos2d::TextHAlignment alignment);
@@ -37,10 +37,13 @@ public:
     void offsetAllCharsPositionBy(cocos2d::Point offset);
     
     //FUNCTIONS TO RUN CUSTOM ACTIONS ON CHARATER SPRITES
+    void runActionOnSpriteAtIndex(int index, cocos2d::FiniteTimeAction* action);
+    
     void runActionOnAllSprites(cocos2d::Action* action);
     void runActionOnAllSprites(cocos2d::Action* action, bool removeOnCompletion);
     void runActionOnAllSprites(cocos2d::Action* action, bool removeOnCompletion, cocos2d::CallFunc *callFuncOnCompletion);
     void stopActionsOnAllSprites();
+    
         //for the 'run actions sequentially' functions, duration refers to the total time to complete actions on all letters, minus the duration of the action itself
     void runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion, cocos2d::CallFunc *callFuncOnCompletion);
     void runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion);
@@ -69,27 +72,21 @@ public:
     void animateInSwell(float duration);
     void animateInRevealFromLeft(float duration);
     void animateInSpin(float duration, int spins);
-    void animateInVortex(bool removeOnCompletion, bool createGhosts);
+    void animateInVortex(float duration, int spins);
 
     //misc animations
     void animateSwell(float duration);
     void animateJump(float duration, float height);
     void animateStretchElastic(float stretchDuration, float releaseDuration, float stretchAmount);
-    
-    
-    
-    
+    void animateRainbow(float duration);
     void flyPastAndRemove();
 
     
-    
-    
-    
-    
-    
-    
+
 private:
     
+    void animateInVortex(bool removeOnCompletion, bool createGhosts, float duration, int spins);
+
     
 };
 

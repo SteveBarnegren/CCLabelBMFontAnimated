@@ -121,6 +121,19 @@ void CCLabelBMFontAnimated::offsetAllCharsPositionBy(cocos2d::Point offset){
 
 #pragma mark - Run Custom Actions
 
+void CCLabelBMFontAnimated::runActionOnSpriteAtIndex(int index, cocos2d::FiniteTimeAction* action){
+    
+    if (index >= getChildren()->count() || index < 0) {
+        cocos2d::log("CCLabelBMFontAnimated::runActionOnSpriteAtIndex - index out of bounds");
+        return;
+    }
+    
+    cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->objectAtIndex(index);
+    charSprite->runAction(action);
+    
+}
+
+
 void CCLabelBMFontAnimated::runActionOnAllSprites(cocos2d::Action* action, bool removeOnCompletion, cocos2d::CallFunc *callFuncOnCompletion){
 
     const int numChars = getChildren()->count();
@@ -266,6 +279,7 @@ void CCLabelBMFontAnimated::runActionOnAllSpritesSequentiallyReverse(cocos2d::Fi
     runActionOnAllSpritesSequentiallyReverse(action, duration, false, nullptr);
     
 }
+
 
 #pragma mark Animations
 
@@ -487,7 +501,7 @@ void CCLabelBMFontAnimated::animateInSpin(float duration, int spins){
         charSprite->runAction(moveToPositionEase);
 
         cocos2d::RotateBy *counterRotate = cocos2d::RotateBy::create(duration, -360 * spins);
-        cocos2d::EaseExponentialOut *counterRotateEase = cocos2d::EaseExponentialOut::create(counterRotate);
+        cocos2d::EaseSineOut *counterRotateEase = cocos2d::EaseSineOut::create(counterRotate);
         charSprite->runAction(counterRotateEase);
         
         cocos2d::FadeIn *fadeIn = cocos2d::FadeIn::create(duration);
@@ -498,24 +512,27 @@ void CCLabelBMFontAnimated::animateInSpin(float duration, int spins){
 
     //spin the label
     cocos2d::RotateBy *spin = cocos2d::RotateBy::create(duration, 360 * spins);
-    cocos2d::EaseExponentialOut *spinEase = cocos2d::EaseExponentialOut::create(spin);
+    cocos2d::EaseSineOut *spinEase = cocos2d::EaseSineOut::create(spin);
     this->runAction(spinEase);
     
     
 }
 
-void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool createGhosts){
+void CCLabelBMFontAnimated::animateInVortex(float duration, int spins){
     
-    float duration = 2;
+    this->animateInVortex(false, true, duration, spins);
+    
+}
+
+
+void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool createGhosts, float duration, int spins){
+
     
     //fade in the label
     float fadeDuration = duration * 0.25;
     cocos2d::FadeTo *fadeIn = cocos2d::FadeTo::create(fadeDuration, getOpacity());
     setOpacity(0);
     this->runAction(fadeIn);
-    
-    
-    int spins = 15;
     
     if (createGhosts) {
         
@@ -528,7 +545,7 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
             ghostLabel->setOpacity(ghostMaxOpacity/(i+1));
             ghostLabel->setPosition(this->getPosition());
             this->getParent()->addChild(ghostLabel);
-            ghostLabel->animateInVortex(true, false);
+            ghostLabel->animateInVortex(true, false, duration, spins);
             
         }
         
@@ -536,7 +553,7 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
     
     for (int i = 0; i < getChildren()->count(); i++) {
         
-        //change the spin on some chars
+        //Alter the number of spins on some characters for variation
         int charSpins = spins;
         if (i % 2 == 0) {
             charSpins--;
@@ -545,6 +562,7 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
             charSpins++;
         }
         
+        //randomly vary the speed of letters
         float staggerAmount = (arc4random() % 10)/10.0f;
         float letterDuration = duration + staggerAmount;
         
@@ -563,6 +581,14 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
         
             for (int s = 0; s < charSpins; s++){
           
+            /*
+             Spin in a circular motion. Circle is split into 4 segments.
+             Segment 1 is the NW arc of the circle
+             Segment 2 is the NE arc of the circle
+             Segment 3 is the SW arc of the circle
+             Segment 4 is the SE arc of the circle
+             */
+                
             //segment 4
             cocos2d::MoveBy *segment4Straight = cocos2d::MoveBy::create(segmentDuration, cocos2d::Point(-radius, -radius));
             cocos2d::MoveBy *segment4PositiveArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Point(arcAmount, -arcAmount));
@@ -600,6 +626,8 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
             cocos2d::Spawn *segment2Action = cocos2d::Spawn::create(segment2Straight, segment2Arc, NULL);
 
             cocos2d::Sequence *spinAction;
+                
+            //Depending on if the letter is to the left or right of the centre of the label, the segments will need to be in different orders:
             
             if ((this->getContentSize().width/2) < charSprite->getPosition().x) {
                 spinAction = cocos2d::Sequence::create(segment4Action, segment3Action, segment1Action, segment2Action, NULL);
@@ -624,13 +652,31 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
     }
 
     if (removeOnCompletion) {
-        cocos2d::DelayTime *waitForAnimation = cocos2d::DelayTime::create(duration * 1.5);
+        cocos2d::DelayTime *waitForAnimation = cocos2d::DelayTime::create(duration * 3);
         cocos2d::CallFunc *remove = cocos2d::CallFunc::create(CC_CALLBACK_0(CCLabelBMFontAnimated::removeFromParent, this));
         cocos2d::Sequence *waitThenRemove = cocos2d::Sequence::create(waitForAnimation, remove, NULL);
         this->runAction(waitThenRemove);
     }
 
 }
+
+void CCLabelBMFontAnimated::animateRainbow(float duration){
+   
+    const float tintDuration = 0.2;
+    
+    cocos2d::TintTo *red = cocos2d::TintTo::create(tintDuration, 255, 0, 0);
+    cocos2d::TintTo *orange = cocos2d::TintTo::create(tintDuration, 255, 153, 51);
+    cocos2d::TintTo *yellow = cocos2d::TintTo::create(tintDuration, 255, 255, 0);
+    cocos2d::TintTo *green = cocos2d::TintTo::create(tintDuration, 0, 255, 0);
+    cocos2d::TintTo *blue = cocos2d::TintTo::create(tintDuration, 0, 0, 255);
+    cocos2d::TintTo *purple = cocos2d::TintTo::create(tintDuration, 102, 0, 204);
+    cocos2d::TintTo *pink = cocos2d::TintTo::create(tintDuration, 255, 51, 255);
+    cocos2d::TintTo *white = cocos2d::TintTo::create(tintDuration, 255, 255, 255);
+    
+    cocos2d::Sequence *rainbow = cocos2d::Sequence::create(red, orange, yellow, green, blue, purple, pink, white, NULL);
+    runActionOnAllSpritesSequentially(rainbow, duration);
+}
+
 
 
 
