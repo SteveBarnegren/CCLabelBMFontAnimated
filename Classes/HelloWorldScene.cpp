@@ -59,7 +59,7 @@ void HelloWorld::runNextAnimation(){
         title->removeFromParent();
     }
     
-    float labelScale = 2;
+    float labelScale = 1;
     float titleFontSize = 30;
     float titleY = 0.9;
     
@@ -201,12 +201,6 @@ void HelloWorld::runNextAnimation(){
         title->setString("Run Custom Action On All Characters Sequentially Reverse");
         label->runActionOnAllSpritesSequentiallyReverse(customAction, 4);
     }
-    
-    
-    
-    
-    
-    
     
     
     
