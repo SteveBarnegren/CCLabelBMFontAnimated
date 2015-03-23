@@ -27,27 +27,21 @@ bool HelloWorld::init()
         return false;
     }
     
-    visibleSize = Director::getInstance()->getVisibleSize();
-    origin = Director::getInstance()->getVisibleOrigin();
     step = 1;
-    
-    //create the label
     
     setupTouch();
     
-    label = CCLabelBMFontAnimated::createWithBMFont("fonts/NBFont1.fnt", "HelpMe", cocos2d::kCCTextAlignmentCenter, visibleSize.width, cocos2d::Vec2(0,0));
-//    label = CCLabelBMFontAnimated::create("HelpMe", "NBFont1.fnt", visibleSize.width, cocos2d::kCCTextAlignmentCenter);
-    label->setPosition(cocos2d::Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height/2));
-    this->addChild(label);
-    
-    cocos2d::RotateBy *rotate = cocos2d::RotateBy::create(6, 360+90);
-    label->runActionOnSpriteAtIndex(3, rotate);
-    
-
-    
-    
     return true;
 }
+
+void HelloWorld::onEnter(){
+    
+    cocos2d::Layer::onEnter();
+    
+    runNextAnimation();
+    
+}
+
 
 void HelloWorld::runNextAnimation(){
     
@@ -63,7 +57,7 @@ void HelloWorld::runNextAnimation(){
     float titleFontSize = 30;
     float titleY = 0.9;
     
-    label = CCLabelBMFontAnimated::createWithBMFont("fonts/NBFont1.fnt", "", cocos2d::kCCTextAlignmentCenter, visibleSize.width, cocos2d::Vec2(0,0));
+    label = CCLabelBMFontAnimated::createWithBMFont("fonts/NBFont1.fnt", "", cocos2d::TextHAlignment::CENTER, visibleSize.width, cocos2d::Vec2(0,0));
     
     //label = CCLabelBMFontAnimated::create("", "NBFont1.fnt", visibleSize.width, cocos2d::kCCTextAlignmentCenter);
     label->setPosition(cocos2d::Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height/2));
@@ -205,6 +199,9 @@ void HelloWorld::runNextAnimation(){
     
     
     step++;
+    if (step > 18) {
+        step = 1;
+    }
 }
 
 void HelloWorld::setupTouch(){

@@ -27,36 +27,6 @@ CCLabelBMFontAnimated* CCLabelBMFontAnimated::createWithBMFont(const std::string
     return nullptr;
 }
 
-
-//CCLabelBMFontAnimated *CCLabelBMFontAnimated::create(const char *str, const char *fntFile, float width/* = kLabelAutomaticWidth*/, cocos2d::TextHAlignment alignment/* = TextHAlignment::LEFT*/, cocos2d::Point imageOffset/* = Point::ZERO*/)
-//{
-//    CCLabelBMFontAnimated *pRet = new CCLabelBMFontAnimated();
-//    if(pRet && pRet->initWithString(str, fntFile, width, alignment, imageOffset))
-//    {
-//        pRet->autorelease();
-//        return pRet;
-//    }
-//    CC_SAFE_DELETE(pRet);
-//    return NULL;
-//}
-//
-//CCLabelBMFontAnimated * CCLabelBMFontAnimated::create(const char *str, const char *fntFile, float width, cocos2d::TextHAlignment alignment)
-//{
-//    return CCLabelBMFontAnimated::create(str, fntFile, width, alignment, cocos2d::Point::ZERO);
-//}
-//
-//CCLabelBMFontAnimated * CCLabelBMFontAnimated::create(const char *str, const char *fntFile, float width)
-//{
-//    return CCLabelBMFontAnimated::create(str, fntFile, width, cocos2d::TextHAlignment::LEFT, cocos2d::Point::ZERO);
-//}
-//
-//CCLabelBMFontAnimated * CCLabelBMFontAnimated::create(const char *str, const char *fntFile)
-//{
-//    return CCLabelBMFontAnimated::create(str, fntFile, cocos2d::kLabelAutomaticWidth, cocos2d::TextHAlignment::LEFT, cocos2d::Point::ZERO);
-//}
-//
-
-
 #pragma mark - Set Basic Character Properties
 
 void CCLabelBMFontAnimated::setCharScale(int index, float s){

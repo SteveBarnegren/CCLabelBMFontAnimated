@@ -24,6 +24,7 @@ public:
     
     cocos2d::LabelTTF *title;
     
+    void onEnter();
     
     int step;
     
