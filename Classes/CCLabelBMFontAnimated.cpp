@@ -549,7 +549,7 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
         
         for (int i = 0; i < numGhosts; i++) {
             
-            CCLabelBMFontAnimated *ghostLabel = CCLabelBMFontAnimated::createWithBMFont(getBMFontFilePath(), getString(), cocos2d::kCCTextAlignmentCenter, getContentSize().width*2, cocos2d::Vec2(0,0));
+            CCLabelBMFontAnimated *ghostLabel = CCLabelBMFontAnimated::createWithBMFont(getBMFontFilePath(), getString(), cocos2d::TextHAlignment::CENTER, getContentSize().width*2, cocos2d::Vec2(0,0));
             
            // CCLabelBMFontAnimated *ghostLabel = CCLabelBMFontAnimated::create(getString(), getBMFontFilePath(), getContentSize().width*2, cocos2d::kCCTextAlignmentCenter);
             ghostLabel->setOpacity(ghostMaxOpacity/(i+1));
