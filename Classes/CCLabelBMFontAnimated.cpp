@@ -247,7 +247,7 @@ void CCLabelBMFontAnimated::runActionOnAllSpritesSequentially(cocos2d::FiniteTim
                 actionsArray.pushBack(callFuncOnCompletion);
             }
             if (removeOnCompletion) {
-                actionsArray.pushBack(cocos2d::CallFunc::create(this, callfunc_selector(CCLabelBMFontAnimated::removeFromParent)));
+                actionsArray.pushBack(cocos2d::CallFunc::create(CC_CALLBACK_0(CCLabelBMFontAnimated::removeFromParent, this)));
             }
             cocos2d::Sequence *actionsSequence = cocos2d::Sequence::create(actionsArray);
             charSprite->runAction(actionsSequence);
@@ -295,7 +295,7 @@ void CCLabelBMFontAnimated::runActionOnAllSpritesSequentiallyReverse(cocos2d::Fi
                 actionsArray.pushBack(callFuncOnCompletion);
             }
             if (removeOnCompletion) {
-                actionsArray.pushBack(cocos2d::CallFunc::create(this, callfunc_selector(CCLabelBMFontAnimated::removeFromParent)));
+                actionsArray.pushBack(cocos2d::CallFunc::create(CC_CALLBACK_0(CCLabelBMFontAnimated::removeFromParent, this)));
             }
             cocos2d::Sequence *actionsSequence = cocos2d::Sequence::create(actionsArray);
             charSprite->runAction(actionsSequence);
@@ -569,8 +569,7 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
     
     //fade in the label
     float fadeDuration = duration * 0.25;
-    cocos2d::FadeTo *fadeIn = cocos2d::FadeTo::create(fadeDuration, getOpacity());
-    setOpacity(0);
+    cocos2d::FadeIn *fadeIn = cocos2d::FadeIn::create(fadeDuration);
     this->runAction(fadeIn);
     
     if (createGhosts) {
@@ -608,7 +607,6 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
         float letterDuration = duration + staggerAmount;
         
         float spinDuration = letterDuration/charSpins;
-        
         
         cocos2d::Sprite *charSprite = getLetter(i);
         
@@ -687,9 +685,6 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
         cocos2d::EaseSineOut *animationEase = cocos2d::EaseSineOut::create(animation);
         
         charSprite->runAction(animationEase);
-        
-        
-        
     }
     
     if (removeOnCompletion) {
