@@ -20,12 +20,13 @@ Scene* HelloWorld::createScene()
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
-    //////////////////////////////
-    // 1. super init first
-    if ( !Layer::init() )
+      if ( !Layer::init() )
     {
         return false;
     }
+    
+    origin = cocos2d::Director::getInstance()->getVisibleOrigin();
+    visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     
     step = 1;
     
@@ -64,7 +65,8 @@ void HelloWorld::runNextAnimation(){
     label->setScale(labelScale);
     this->addChild(label);
     
-    title = LabelTTF::create("animateInFlyInFromLeft(float duration) test", "Ariel", titleFontSize);
+    //title = LabelTTF::create("animateInFlyInFromLeft(float duration) test", "Ariel", titleFontSize);
+    title = Label::createWithSystemFont("animateInFlyInFromLeft(float duration) test", "Ariel", titleFontSize);
     title->setPosition(cocos2d::Point(origin.x + (visibleSize.width/2), origin.y + (visibleSize.height * titleY)));
     this->addChild(title);
     
@@ -82,9 +84,6 @@ void HelloWorld::runNextAnimation(){
     cocos2d::TintTo *tintNormal = cocos2d::TintTo::create(0.5, 255, 255, 255);
     
     cocos2d::Sequence *customAction = cocos2d::Sequence::create(rotateEase, wait1, scaleDown, scaleUpEase, wait2, tintRed, tintGreen, tintBlue, tintNormal, NULL);
-    
-    
-    
     
     //animate in fly in from left
     if (step == 1) {
@@ -215,7 +214,6 @@ void HelloWorld::setupTouch(){
     touchListener->onTouchEnded = CC_CALLBACK_2(HelloWorld::onTouchEnded, this);
     
     //add the listener
-    //cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, this);
     cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(touchListener, 1);
     
 }

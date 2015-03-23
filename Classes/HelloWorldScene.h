@@ -19,28 +19,26 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
     
-    //the label
-    CCLabelBMFontAnimated *label;
     
-    cocos2d::LabelTTF *title;
-    
-    void onEnter();
-    
-    int step;
-    
-    void runNextAnimation();
-    
+private:
     
     cocos2d::Size visibleSize;
     cocos2d::Point origin;
     
-    void setupTouch();
+    CCLabelBMFontAnimated *label;
+    cocos2d::Label *title;
     
+    int step;
+    
+    void onEnter();
+    
+    void setupTouch();
     bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
     void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
     void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
-    
-    
+
+    void runNextAnimation();
+
 
 };
 

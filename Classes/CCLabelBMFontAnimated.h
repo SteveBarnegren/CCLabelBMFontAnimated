@@ -13,15 +13,9 @@
 
 class CCLabelBMFontAnimated : public cocos2d::Label {
 public:
-    
-    //Override LabelBMFont CREATE FUNCTIONS, RETURNING CCLabelBMFontAnimated
-    //CREATE_FUNC(CCLabelBMFontAnimated);
-    static CCLabelBMFontAnimated* createWithBMFont(const std::string& bmfontFilePath, const std::string& text,const cocos2d::TextHAlignment& alignment /* = TextHAlignment::LEFT */, int maxLineWidth /* = 0 */, const cocos2d::Vec2& imageOffset /* = Vec2::ZERO */);
 
-//    static CCLabelBMFontAnimated * create(const char *str, const char *fntFile, float width, cocos2d::TextHAlignment alignment, cocos2d::Point imageOffset);
-//    static CCLabelBMFontAnimated * create(const char *str, const char *fntFile, float width, cocos2d::TextHAlignment alignment);
-//    static CCLabelBMFontAnimated * create(const char *str, const char *fntFile, float width);
-//    static CCLabelBMFontAnimated * create(const char *str, const char *fntFile);
+    // ONLY USE THIS FUNCTION FOR CREATION
+    static CCLabelBMFontAnimated* createWithBMFont(const std::string& bmfontFilePath, const std::string& text,const cocos2d::TextHAlignment& alignment /* = TextHAlignment::LEFT */, int maxLineWidth /* = 0 */, const cocos2d::Vec2& imageOffset /* = Vec2::ZERO */);
     
     //FUNCTIONS TO SET BASIC CHARACTER SPRITE PROPERTIES AT INDEX
     void setCharScale(int index, float s);
@@ -51,20 +45,15 @@ public:
     void runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion);
     void runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration);
     
-    
-    
     //ANIMATIONS
-    
-    
+
     //fly ins
-    
     void animateInFlyInFromLeft(float duration);
     void animateInFlyInFromRight(float duration);
     void animateInFlyInFromTop(float duration);
     void animateInFlyInFromBottom(float duration);
     
     //misc animate ins
-    
     void animateInTypewriter(float duration);
     void animateInDropFromTop(float duration);
     void animateInSwell(float duration);
@@ -79,15 +68,10 @@ public:
     void animateRainbow(float duration);
     void flyPastAndRemove();
     
-    
-    
 private:
     
+    int numLetters();    
     void animateInVortex(bool removeOnCompletion, bool createGhosts, float duration, int spins);
-    int numLetters();
-
-    
-    
     
 };
 
