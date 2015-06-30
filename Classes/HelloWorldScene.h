@@ -26,6 +26,7 @@ private:
     cocos2d::Point origin;
     
     CCLabelBMFontAnimated *label;
+    CCLabelBMFontAnimated *ttfLabel;
     cocos2d::Label *title;
     
     int step;
