@@ -573,7 +573,7 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
         }
         
         //randomly vary the speed of letters
-        float staggerAmount = (arc4random() % 10)/10.0f;
+        float staggerAmount = (cocos2d::random() % 10)/10.0f;
         float letterDuration = duration + staggerAmount;
         
         float spinDuration = letterDuration/charSpins;
