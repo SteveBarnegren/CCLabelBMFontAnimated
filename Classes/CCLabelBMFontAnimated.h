@@ -10,6 +10,7 @@
 #define __CCLabelAnimated__CCLabelAnimated__
 
 #include <stdio.h>
+#include "cocos2d.h"
 
 class CCLabelBMFontAnimated : public cocos2d::Label {
 public:
