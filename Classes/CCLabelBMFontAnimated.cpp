@@ -27,6 +27,29 @@ CCLabelBMFontAnimated* CCLabelBMFontAnimated::createWithBMFont(const std::string
     return nullptr;
 }
 
+CCLabelBMFontAnimated* CCLabelBMFontAnimated::createWithTTF(const std::string& text, const std::string& fontFile, float fontSize, const cocos2d::Size& dimensions /* = Size::ZERO */, cocos2d::TextHAlignment hAlignment /* = TextHAlignment::LEFT */, cocos2d::TextVAlignment vAlignment /* = TextVAlignment::TOP */)
+{
+    auto ret = new (std::nothrow) CCLabelBMFontAnimated();
+
+    if (ret && cocos2d::FileUtils::getInstance()->isFileExist(fontFile))
+    {
+        cocos2d::TTFConfig ttfConfig(fontFile.c_str(),fontSize,cocos2d::GlyphCollection::DYNAMIC);
+        if (ret->setTTFConfig(ttfConfig))
+        {
+            ret->setAlignment(hAlignment, vAlignment);
+            ret->setDimensions(dimensions.width,dimensions.height);
+            ret->setString(text);
+
+            ret->autorelease();
+
+            return ret;
+        }
+    }
+
+    delete ret;
+    return nullptr;
+}
+
 #pragma mark - Set Basic Character Properties
 
 void CCLabelBMFontAnimated::setCharScale(int index, float s){
@@ -573,7 +596,7 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
         }
         
         //randomly vary the speed of letters
-        float staggerAmount = (arc4random() % 10)/10.0f;
+        float staggerAmount = (cocos2d::random() % 10)/10.0f;
         float letterDuration = duration + staggerAmount;
         
         float spinDuration = letterDuration/charSpins;

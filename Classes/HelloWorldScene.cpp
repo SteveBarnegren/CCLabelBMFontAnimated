@@ -58,11 +58,18 @@ void HelloWorld::runNextAnimation(){
     float titleFontSize = 30;
     float titleY = 0.9;
     
-    label = CCLabelBMFontAnimated::createWithBMFont("fonts/NBFont1.fnt", "", cocos2d::TextHAlignment::CENTER, visibleSize.width, cocos2d::Vec2(0,0));
-    
+    if(step != 19) {
+        label = CCLabelBMFontAnimated::createWithBMFont("fonts/NBFont1.fnt", "", cocos2d::TextHAlignment::CENTER, visibleSize.width, cocos2d::Vec2(0,0));
+        label->setScale(labelScale);
+    } else {
+        label = CCLabelBMFontAnimated::createWithTTF("", "fonts/arial.ttf", 50.0f,
+            Size(visibleSize.width, 40),
+            cocos2d::TextHAlignment::CENTER, cocos2d::TextVAlignment::TOP);
+            label->setTextColor(Color4B::WHITE);
+    }
+
     //label = CCLabelBMFontAnimated::create("", "NBFont1.fnt", visibleSize.width, cocos2d::kCCTextAlignmentCenter);
     label->setPosition(cocos2d::Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height/2));
-    label->setScale(labelScale);
     this->addChild(label);
     
     //title = LabelTTF::create("animateInFlyInFromLeft(float duration) test", "Ariel", titleFontSize);
@@ -194,11 +201,17 @@ void HelloWorld::runNextAnimation(){
         title->setString("Run Custom Action On All Characters Sequentially Reverse");
         label->runActionOnAllSpritesSequentiallyReverse(customAction, 4);
     }
-    
+    // run ttf animation
+    else if (step == 19) {
+        label->setString("CCLabelBMFontAnimated");
+        title->setString("And ttf fonts work as well!");
+        label->runActionOnAllSpritesSequentially(customAction, 4);
+    }
+     
     
     
     step++;
-    if (step > 18) {
+    if (step > 19) {
         step = 1;
     }
 }
